@@ -1,0 +1,39 @@
+<%
+  const links = [
+    { page: 'home', href: '/', label: 'Home' },
+    { page: 'about', href: '/about', label: 'About Us' },
+    { page: 'services', href: '/services', label: 'Services' },
+    { page: 'contact', href: '/contact', label: 'Contact' },
+    { page: 'disclaimer', href: '/disclaimer', label: 'Disclaimer' }
+  ];
+  const appointmentHref = activePage === 'contact' ? '#appointment' : '/contact#appointment';
+%>
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="/" class="nav-logo" aria-label="Rutabanks Home">
+          <div class="nav-logo-icon" aria-hidden="true">⚖️</div>
+          <div class="nav-logo-text">
+            <div class="firm-name">Rutabanks Notary</div>
+            <div class="firm-tag">& Legal Services Ltd</div>
+          </div>
+        </a>
+        <div class="nav-links" role="list">
+          <% links.forEach(link => { %>
+          <a href="<%= link.href %>" role="listitem"<% if (link.page === activePage) { %> class="active" aria-current="page"<% } %>><%= link.label %></a>
+          <% }) %>
+        </div>
+        <a href="<%= appointmentHref %>" class="btn btn-primary nav-cta">Book Appointment</a>
+        <button class="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div class="mobile-menu" role="list">
+        <% links.forEach(link => { %>
+        <a href="<%= link.href %>" role="listitem"<% if (link.page === activePage) { %> class="active" aria-current="page"<% } %>><%= link.label %></a>
+        <% }) %>
+        <a href="<%= appointmentHref %>" class="btn btn-primary">Book Appointment</a>
+      </div>
+    </div>
+  </nav>

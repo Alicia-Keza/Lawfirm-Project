@@ -21,15 +21,6 @@ if (hamburger && mobileMenu) {
   });
 }
 
-/* ===== ACTIVE NAV LINK ===== */
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(link => {
-  const href = link.getAttribute('href');
-  if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-    link.classList.add('active');
-  }
-});
-
 /* ===== TOAST NOTIFICATION ===== */
 function showToast(message, type = 'success') {
   const existing = document.querySelector('.toast');

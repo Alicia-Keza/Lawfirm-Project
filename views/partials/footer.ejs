@@ -1,0 +1,67 @@
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo" aria-label="Rutabanks Home">
+            <div class="nav-logo-icon" aria-hidden="true">⚖️</div>
+            <div class="nav-logo-text">
+              <div class="firm-name">Rutabanks Notary</div>
+              <div class="firm-tag">& Legal Services Ltd</div>
+            </div>
+          </a>
+          <p>A registered private company providing professional notarial and legal services in Rwanda. Committed to accuracy, ethics, and client satisfaction.</p>
+          <span class="footer-slogan">"Precision in Law. Trust in Service."</span>
+        </div>
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <nav class="footer-links" aria-label="Footer navigation">
+            <a href="/">Home</a>
+            <a href="/about">About Us</a>
+            <a href="/services">Our Services</a>
+            <a href="/contact">Contact</a>
+            <a href="/disclaimer">Legal Disclaimer</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <nav class="footer-links" aria-label="Services navigation">
+            <a href="/services#notarial">Notarial Services</a>
+            <a href="/services#legal">Legal Services</a>
+            <a href="/services#specialized">Specialized Services</a>
+            <a href="<%= activePage === 'contact' ? '#appointment' : '/contact#appointment' %>">Book Appointment</a>
+          </nav>
+        </div>
+        <div class="footer-col">
+          <h5>Contact Us</h5>
+          <address style="font-style:normal;">
+            <div class="footer-contact-item">
+              <span class="icon">📍</span>
+              <span>Kigali, Rwanda</span>
+            </div>
+            <div class="footer-contact-item">
+              <span class="icon">📞</span>
+              <span>0788308526</span>
+            </div>
+            <div class="footer-contact-item">
+              <span class="icon">📧</span>
+              <span>rutayisireeugene1968@gmail.com</span>
+            </div>
+            <div class="footer-contact-item">
+              <span class="icon">🕒</span>
+              <span>Mon–Fri: 8:00 AM – 6:00 PM<br>Sat: 9:00 AM – 2:00 PM</span>
+            </div>
+          </address>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <%= new Date().getFullYear() %> Rutabanks Notary and Legal Services Ltd. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="/disclaimer">Legal Disclaimer</a>
+          <a href="/contact">Privacy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
