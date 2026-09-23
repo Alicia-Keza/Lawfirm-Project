@@ -27,7 +27,12 @@ function showToast(message, type = 'success') {
   if (existing) existing.remove();
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<span class="toast-icon">${type === 'success' ? '✅' : '❌'}</span><span>${message}</span>`;
+  const icon = document.createElement('span');
+  icon.className = 'toast-icon';
+  icon.textContent = type === 'success' ? '✅' : '❌';
+  const text = document.createElement('span');
+  text.textContent = message;
+  toast.append(icon, text);
   document.body.appendChild(toast);
   requestAnimationFrame(() => { requestAnimationFrame(() => { toast.classList.add('show'); }); });
   setTimeout(() => {
