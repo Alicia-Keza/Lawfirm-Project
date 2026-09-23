@@ -24,11 +24,11 @@
 
         <!-- INFO COLUMN -->
         <div class="contact-info" aria-label="Contact information">
-          <div class="section-header" style="text-align:left; margin-bottom:32px;">
+          <div class="section-header section-header-left">
             <span class="section-label">How to Reach Us</span>
-            <h2 id="contact-heading" style="font-size:1.8rem;">We Are Here for You</h2>
-            <p style="margin:0;">Whether you need legal advice, document notarization, or want to book an appointment, we make it easy to connect.</p>
-            <div class="divider" style="margin-left:0;" aria-hidden="true"></div>
+            <h2 id="contact-heading">We Are Here for You</h2>
+            <p>Whether you need legal advice, document notarization, or want to book an appointment, we make it easy to connect.</p>
+            <div class="divider" aria-hidden="true"></div>
           </div>
 
           <div class="contact-card">
@@ -78,29 +78,29 @@
 
           <div class="disclaimer-box" role="note" aria-label="Legal notice">
             <h5>⚖️ Legal Notice</h5>
-            <p>Contacting us does not create a lawyer-client relationship. All information shared is for initial inquiry purposes only. See our full <a href="/disclaimer" style="color:var(--dark-blue); font-weight:600;">Legal Disclaimer</a>.</p>
+            <p>Contacting us does not create a lawyer-client relationship. All information shared is for initial inquiry purposes only. See our full <a href="/disclaimer">Legal Disclaimer</a>.</p>
           </div>
         </div>
 
         <!-- FORMS COLUMN -->
         <div>
           <!-- CONTACT FORM -->
-          <div class="contact-form-card" style="margin-bottom:40px;" aria-labelledby="contact-form-heading">
+          <div class="contact-form-card" aria-labelledby="contact-form-heading">
             <h3 id="contact-form-heading">Send Us a Message</h3>
             <p>Fill in the form below and we will get back to you as soon as possible.</p>
             <form id="contactForm" novalidate aria-label="Contact form">
               <div class="form-row">
                 <div class="form-group">
-                  <label for="first-name">First Name <span aria-hidden="true" style="color:red;">*</span></label>
+                  <label for="first-name">First Name <span class="required" aria-hidden="true">*</span></label>
                   <input type="text" id="first-name" name="first_name" required placeholder="Jean" autocomplete="given-name" />
                 </div>
                 <div class="form-group">
-                  <label for="last-name">Last Name <span aria-hidden="true" style="color:red;">*</span></label>
+                  <label for="last-name">Last Name <span class="required" aria-hidden="true">*</span></label>
                   <input type="text" id="last-name" name="last_name" required placeholder="Mutabazi" autocomplete="family-name" />
                 </div>
               </div>
               <div class="form-group">
-                <label for="email">Email Address <span aria-hidden="true" style="color:red;">*</span></label>
+                <label for="email">Email Address <span class="required" aria-hidden="true">*</span></label>
                 <input type="email" id="email" name="email" required placeholder="jean.mutabazi@example.com" autocomplete="email" />
               </div>
               <div class="form-group">
@@ -123,7 +123,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="message">Your Message <span aria-hidden="true" style="color:red;">*</span></label>
+                <label for="message">Your Message <span class="required" aria-hidden="true">*</span></label>
                 <textarea id="message" name="message" required placeholder="Please describe your legal need or question..."></textarea>
               </div>
               <button type="submit" class="btn btn-primary form-submit">✉️ Send Message</button>
@@ -138,11 +138,11 @@
             <form id="appointmentForm" novalidate aria-label="Appointment booking form">
               <div class="form-row">
                 <div class="form-group">
-                  <label for="appt-name">Full Name <span aria-hidden="true" style="color:red;">*</span></label>
+                  <label for="appt-name">Full Name <span class="required" aria-hidden="true">*</span></label>
                   <input type="text" id="appt-name" name="full_name" required placeholder="Your full name" autocomplete="name" />
                 </div>
                 <div class="form-group">
-                  <label for="appt-phone">Phone Number <span aria-hidden="true" style="color:red;">*</span></label>
+                  <label for="appt-phone">Phone Number <span class="required" aria-hidden="true">*</span></label>
                   <input type="tel" id="appt-phone" name="phone" required placeholder="+250 7XX XXX XXX" autocomplete="tel" />
                 </div>
               </div>
@@ -152,7 +152,7 @@
               </div>
               <div class="form-row">
                 <div class="form-group">
-                  <label for="appt-date">Preferred Date <span aria-hidden="true" style="color:red;">*</span></label>
+                  <label for="appt-date">Preferred Date <span class="required" aria-hidden="true">*</span></label>
                   <input type="date" id="appt-date" name="date" required min="" />
                 </div>
                 <div class="form-group">
@@ -172,7 +172,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="appt-service">Service Required <span aria-hidden="true" style="color:red;">*</span></label>
+                <label for="appt-service">Service Required <span class="required" aria-hidden="true">*</span></label>
                 <select id="appt-service" name="service" required>
                   <option value="" disabled selected>Select a service...</option>
                   <option value="notarial">Notarial Services</option>
@@ -188,7 +188,7 @@
               </div>
               <div class="form-group">
                 <label for="appt-notes">Additional Notes</label>
-                <textarea id="appt-notes" name="notes" placeholder="Any details that will help us prepare for your appointment..." style="min-height:100px;"></textarea>
+                <textarea id="appt-notes" name="notes" class="textarea-short" placeholder="Any details that will help us prepare for your appointment..."></textarea>
               </div>
               <button type="submit" class="btn btn-primary form-submit">📅 Confirm Appointment Request</button>
               <p class="form-note">📞 We will call to confirm your appointment within one business day.</p>
