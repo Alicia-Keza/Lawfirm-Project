@@ -41,41 +41,27 @@ function showToast(message, type = 'success') {
   }, 4000);
 }
 
-/* ===== CONTACT FORM ===== */
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', function(e) {
+/* ===== FORMS ===== */
+function setupForm(formId, busyText, successMessage) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const btn = this.querySelector('.form-submit');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '⏳ Sending...';
+    const btn = form.querySelector('.form-submit');
+    const originalText = btn.textContent;
+    btn.textContent = busyText;
     btn.disabled = true;
     setTimeout(() => {
-      btn.innerHTML = originalText;
+      btn.textContent = originalText;
       btn.disabled = false;
-      contactForm.reset();
-      showToast('Thank you! Your message has been received. We will contact you shortly.', 'success');
+      form.reset();
+      showToast(successMessage, 'success');
     }, 1600);
   });
 }
 
-/* ===== APPOINTMENT FORM ===== */
-const appointmentForm = document.getElementById('appointmentForm');
-if (appointmentForm) {
-  appointmentForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const btn = this.querySelector('.form-submit');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '⏳ Booking...';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.innerHTML = originalText;
-      btn.disabled = false;
-      appointmentForm.reset();
-      showToast('Appointment request received! We will confirm your booking shortly.', 'success');
-    }, 1600);
-  });
-}
+setupForm('contactForm', '⏳ Sending...', 'Thank you! Your message has been received. We will contact you shortly.');
+setupForm('appointmentForm', '⏳ Booking...', 'Appointment request received! We will confirm your booking shortly.');
 
 /* ===== SCROLL REVEAL ===== */
 const revealElements = document.querySelectorAll(
