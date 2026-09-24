@@ -1086,8 +1086,9 @@ p {
   padding: 24px;
   margin-top: 24px;
 }
-.disclaimer-box h5 {
+.disclaimer-box .disclaimer-box-title {
   font-family: 'Playfair Display', serif;
+  font-weight: 700;
   color: var(--dark-blue);
   margin-bottom: 8px;
   font-size: 0.95rem;
@@ -1139,7 +1140,7 @@ p {
   margin-top: 16px;
   display: block;
 }
-.footer-col h5 {
+.footer-col .footer-heading {
   font-family: 'Playfair Display', serif;
   color: var(--white);
   font-size: 1rem;
