@@ -7,6 +7,7 @@
   --light-blue: #2563a8;
   --gold: #c9a84c;
   --gold-light: #e8c97a;
+  --gold-dark: #8a6d1f; /* gold for text on light backgrounds (4.5:1 contrast) */
   --white: #ffffff;
   --off-white: #f8f7f4;
   --gray-light: #f0eff0;
@@ -104,7 +105,7 @@ p {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-dark);
   margin-bottom: 12px;
 }
 .section-header h2 {
@@ -509,7 +510,7 @@ p {
 }
 .service-list li::before {
   content: '✓';
-  color: var(--gold);
+  color: var(--gold-dark);
   font-weight: 700;
   flex-shrink: 0;
   margin-top: 1px;
@@ -641,6 +642,7 @@ p {
   z-index: 2;
 }
 .page-hero .section-label {
+  color: var(--gold);
   margin-bottom: 12px;
 }
 .page-hero h1 {
@@ -660,7 +662,7 @@ p {
   gap: 8px;
   margin-top: 24px;
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 .breadcrumb a {
   color: var(--gold);
