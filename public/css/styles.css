@@ -32,6 +32,9 @@
 html {
   scroll-behavior: smooth;
 }
+[id] {
+  scroll-margin-top: 96px; /* keep anchor targets below the fixed navbar */
+}
 body {
   font-family: 'Open Sans', sans-serif;
   color: var(--text);
