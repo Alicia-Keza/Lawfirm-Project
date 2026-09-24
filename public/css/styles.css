@@ -52,6 +52,31 @@ ul {
   list-style: none;
 }
 
+/* ===== ACCESSIBILITY ===== */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 16px;
+  z-index: 2000;
+  background: var(--gold);
+  color: var(--dark-blue);
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+}
+.skip-link:focus {
+  top: 12px;
+}
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+main:focus {
+  outline: none;
+}
+
 /* ===== TYPOGRAPHY ===== */
 h1,
 h2,
