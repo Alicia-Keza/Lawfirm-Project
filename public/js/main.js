@@ -83,9 +83,12 @@ setupForm(
 );
 
 /* ===== SCROLL REVEAL ===== */
-const revealElements = document.querySelectorAll(
-  '.service-card, .value-card, .why-feature, .contact-card, .service-item, .credential'
-);
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const revealElements = reduceMotion
+  ? []
+  : document.querySelectorAll(
+      '.service-card, .value-card, .why-feature, .contact-card, .service-item, .credential'
+    );
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry, i) => {
@@ -114,7 +117,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const target = document.querySelector(this.getAttribute('href'));
     if (target) {
       e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     }
   });
 });
@@ -149,4 +152,4 @@ const statsObserver = new IntersectionObserver(
   { threshold: 0.5 }
 );
 const statsEl = document.querySelector('.hero-stats');
-if (statsEl) statsObserver.observe(statsEl);
+if (statsEl && !reduceMotion) statsObserver.observe(statsEl);
