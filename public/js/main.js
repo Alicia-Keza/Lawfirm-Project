@@ -13,7 +13,7 @@ if (hamburger && mobileMenu) {
     hamburger.classList.toggle('open');
     mobileMenu.classList.toggle('open');
   });
-  document.querySelectorAll('.mobile-menu a').forEach(link => {
+  document.querySelectorAll('.mobile-menu a').forEach((link) => {
     link.addEventListener('click', () => {
       hamburger.classList.remove('open');
       mobileMenu.classList.remove('open');
@@ -34,7 +34,11 @@ function showToast(message, type = 'success') {
   text.textContent = message;
   toast.append(icon, text);
   document.body.appendChild(toast);
-  requestAnimationFrame(() => { requestAnimationFrame(() => { toast.classList.add('show'); }); });
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+  });
   setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => toast.remove(), 400);
@@ -60,26 +64,37 @@ function setupForm(formId, busyText, successMessage) {
   });
 }
 
-setupForm('contactForm', '⏳ Sending...', 'Thank you! Your message has been received. We will contact you shortly.');
-setupForm('appointmentForm', '⏳ Booking...', 'Appointment request received! We will confirm your booking shortly.');
+setupForm(
+  'contactForm',
+  '⏳ Sending...',
+  'Thank you! Your message has been received. We will contact you shortly.'
+);
+setupForm(
+  'appointmentForm',
+  '⏳ Booking...',
+  'Appointment request received! We will confirm your booking shortly.'
+);
 
 /* ===== SCROLL REVEAL ===== */
 const revealElements = document.querySelectorAll(
   '.service-card, .value-card, .why-feature, .contact-card, .service-item, .credential'
 );
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }, i * 60);
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12 });
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, i * 60);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
 
-revealElements.forEach(el => {
+revealElements.forEach((el) => {
   el.style.opacity = '0';
   el.style.transform = 'translateY(24px)';
   el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
@@ -87,8 +102,8 @@ revealElements.forEach(el => {
 });
 
 /* ===== SMOOTH SCROLL FOR ANCHOR LINKS ===== */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener('click', function (e) {
     const target = document.querySelector(this.getAttribute('href'));
     if (target) {
       e.preventDefault();
@@ -103,22 +118,28 @@ function animateCounter(el, target, suffix = '') {
   const increment = target / 50;
   const timer = setInterval(() => {
     current += increment;
-    if (current >= target) { current = target; clearInterval(timer); }
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
     el.textContent = Math.floor(current) + suffix;
   }, 30);
 }
-const statsObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.querySelectorAll('.stat-num').forEach(stat => {
-        const text = stat.textContent;
-        const num = parseInt(text);
-        const suffix = text.replace(/[0-9]/g, '');
-        if (!isNaN(num)) animateCounter(stat, num, suffix);
-      });
-      statsObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.5 });
+const statsObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.stat-num').forEach((stat) => {
+          const text = stat.textContent;
+          const num = parseInt(text);
+          const suffix = text.replace(/[0-9]/g, '');
+          if (!isNaN(num)) animateCounter(stat, num, suffix);
+        });
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
 const statsEl = document.querySelector('.hero-stats');
 if (statsEl) statsObserver.observe(statsEl);
