@@ -28,6 +28,10 @@ app.get('/:page.html', (req, res, next) => {
   next();
 });
 
+app.use((req, res) => {
+  res.status(404).render('pages/404');
+});
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

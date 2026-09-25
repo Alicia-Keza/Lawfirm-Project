@@ -659,6 +659,18 @@ p {
   position: relative;
   overflow: hidden;
 }
+.page-hero-full {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+}
+.page-hero-full .container {
+  width: 100%;
+}
+.hero-actions-center {
+  justify-content: center;
+  margin: 32px 0 0;
+}
 .page-hero::before {
   content: '';
   position: absolute;
