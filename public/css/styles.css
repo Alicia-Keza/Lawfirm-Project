@@ -1223,10 +1223,16 @@ p {
   max-width: 800px;
   margin: 0 auto;
 }
-.disclaimer-content h3 {
+.disclaimer-content h3,
+.disclaimer-content .content-heading {
   margin-top: 36px;
   margin-bottom: 12px;
   font-size: 1.15rem;
+}
+.disclaimer-content a {
+  color: var(--dark-blue);
+  font-weight: 600;
+  text-decoration: underline;
 }
 .disclaimer-content p {
   margin-bottom: 16px;

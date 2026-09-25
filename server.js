@@ -14,7 +14,8 @@ const pages = {
   '/about': 'about',
   '/services': 'services',
   '/contact': 'contact',
-  '/disclaimer': 'disclaimer'
+  '/disclaimer': 'disclaimer',
+  '/privacy': 'privacy'
 };
 
 Object.entries(pages).forEach(([route, view]) => {
