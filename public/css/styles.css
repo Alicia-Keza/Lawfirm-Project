@@ -1083,10 +1083,11 @@ p {
   font-size: 0.8rem;
   color: var(--gray);
   margin-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+}
+.form-note a {
+  color: var(--dark-blue);
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 /* ===== DISCLAIMER ===== */
