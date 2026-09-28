@@ -1,7 +1,6 @@
+const config = require('./src/config');
 const { createApp } = require('./src/app');
 
-const PORT = process.env.PORT || 3000;
-
-createApp().listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+createApp().listen(config.port, () => {
+  console.log(`Server running at http://localhost:${config.port} (${config.env})`);
 });
