@@ -2,8 +2,9 @@ const path = require('path');
 const express = require('express');
 const pageRoutes = require('./routes/pages');
 
-function createApp() {
+function createApp({ db }) {
   const app = express();
+  app.locals.db = db;
 
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '..', 'views'));
