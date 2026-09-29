@@ -116,13 +116,43 @@ function validateForm(form) {
 }
 
 /* ===== FORMS ===== */
-function setupForm(formId, busyText, successMessage) {
+const FALLBACK_MESSAGE =
+  'Sorry, we could not send your request. Please try again or call us on +250 788 308 526.';
+
+function showServerErrors(form, errors) {
+  let firstInvalid = null;
+  Object.entries(errors).forEach(([name, message]) => {
+    const field = form.elements[name];
+    if (!field || !field.id) return;
+    setFieldError(field, message);
+    if (!firstInvalid) firstInvalid = field;
+  });
+  if (firstInvalid) firstInvalid.focus();
+}
+
+async function postForm(endpoint, form) {
+  // TODO: remove once every form has an API endpoint
+  if (!endpoint) {
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    return { status: 201, body: {} };
+  }
+  const payload = Object.fromEntries(new FormData(form));
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const body = await res.json().catch(() => ({}));
+  return { status: res.status, body };
+}
+
+function setupForm(formId, { endpoint, busyText, successMessage, onSuccess }) {
   const form = document.getElementById(formId);
   if (!form) return;
   form.addEventListener('input', (e) => {
     if (e.target.getAttribute('aria-invalid')) setFieldError(e.target, checkField(e.target));
   });
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validateForm(form)) {
       showToast('Please correct the highlighted fields.', 'error');
@@ -132,25 +162,37 @@ function setupForm(formId, busyText, successMessage) {
     const originalText = btn.textContent;
     btn.textContent = busyText;
     btn.disabled = true;
-    setTimeout(() => {
+    try {
+      const { status, body } = await postForm(endpoint, form);
+      if (status === 201) {
+        form.reset();
+        showToast(successMessage, 'success');
+        if (onSuccess) onSuccess(body);
+      } else if (status === 422 && body.errors) {
+        showServerErrors(form, body.errors);
+        showToast('Please correct the highlighted fields.', 'error');
+      } else {
+        showToast(body.error || FALLBACK_MESSAGE, 'error');
+      }
+    } catch {
+      showToast(FALLBACK_MESSAGE, 'error');
+    } finally {
       btn.textContent = originalText;
       btn.disabled = false;
-      form.reset();
-      showToast(successMessage, 'success');
-    }, 1600);
+    }
   });
 }
 
-setupForm(
-  'contactForm',
-  '⏳ Sending...',
-  'Thank you! Your message has been received. We will contact you shortly.'
-);
-setupForm(
-  'appointmentForm',
-  '⏳ Booking...',
-  'Appointment request received! We will confirm your booking shortly.'
-);
+setupForm('contactForm', {
+  endpoint: '/api/contact',
+  busyText: '⏳ Sending...',
+  successMessage: 'Thank you! Your message has been received. We will contact you shortly.'
+});
+setupForm('appointmentForm', {
+  endpoint: null,
+  busyText: '⏳ Booking...',
+  successMessage: 'Appointment request received! We will confirm your booking shortly.'
+});
 
 /* ===== SCROLL REVEAL ===== */
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
