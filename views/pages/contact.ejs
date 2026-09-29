@@ -127,6 +127,14 @@
                 <label for="message">Your Message <span class="required" aria-hidden="true">*</span></label>
                 <textarea id="message" name="message" required placeholder="Please describe your legal need or question..."></textarea>
               </div>
+              <div class="form-group form-check">
+                <input type="checkbox" id="consent" name="consent" value="yes" required />
+                <label for="consent">I agree that Rutabanks may use these details to respond to my request, as described in the <a href="/privacy">Privacy Policy</a>. <span class="required" aria-hidden="true">*</span></label>
+              </div>
+              <div class="form-hp" aria-hidden="true">
+                <label for="website">Leave this field empty</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
               <button type="submit" class="btn btn-primary form-submit">✉️ Send Message</button>
               <p class="form-note">🔒 We only use your details to respond to you and never sell them. Please don't send confidential documents through this form. See our <a href="/privacy">Privacy Policy</a>.</p>
             </form>
@@ -190,6 +198,14 @@
               <div class="form-group">
                 <label for="appt-notes">Additional Notes</label>
                 <textarea id="appt-notes" name="notes" class="textarea-short" placeholder="Any details that will help us prepare for your appointment..."></textarea>
+              </div>
+              <div class="form-group form-check">
+                <input type="checkbox" id="appt-consent" name="consent" value="yes" required />
+                <label for="appt-consent">I agree that Rutabanks may use these details to arrange my appointment, as described in the <a href="/privacy">Privacy Policy</a>. <span class="required" aria-hidden="true">*</span></label>
+              </div>
+              <div class="form-hp" aria-hidden="true">
+                <label for="appt-website">Leave this field empty</label>
+                <input type="text" id="appt-website" name="website" tabindex="-1" autocomplete="off" />
               </div>
               <button type="submit" class="btn btn-primary form-submit">📅 Confirm Appointment Request</button>
               <p class="form-note">📞 We will call to confirm your appointment within one business day.</p>

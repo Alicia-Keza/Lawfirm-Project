@@ -50,8 +50,20 @@ function validateContact(body = {}) {
   if (!data.message) errors.message = 'Please enter your message.';
   else if (data.message.length < 10)
     errors.message = 'Please tell us a little more (at least 10 characters).';
+  if (!hasConsent(body)) errors.consent = CONSENT_ERROR;
 
   return { data, errors, valid: Object.keys(errors).length === 0 };
 }
 
-module.exports = { SERVICES, clean, isEmail, isPhone, validateContact };
+const CONSENT_ERROR = 'Please agree to the privacy policy so we can process your request.';
+
+function hasConsent(body) {
+  return body.consent === 'yes' || body.consent === true;
+}
+
+// Honeypot: the hidden "website" field is only ever filled in by bots
+function isSpam(body = {}) {
+  return typeof body.website === 'string' && body.website.trim() !== '';
+}
+
+module.exports = { SERVICES, clean, isEmail, isPhone, hasConsent, isSpam, validateContact };

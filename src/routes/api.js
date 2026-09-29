@@ -1,9 +1,12 @@
 const express = require('express');
-const { validateContact } = require('../validation');
+const { validateContact, isSpam } = require('../validation');
 
 const router = express.Router();
 
 router.post('/contact', (req, res) => {
+  // Pretend success so bots don't learn they were caught
+  if (isSpam(req.body)) return res.status(201).json({ ok: true });
+
   const { data, errors, valid } = validateContact(req.body);
   if (!valid) return res.status(422).json({ ok: false, errors });
 

@@ -1063,6 +1063,44 @@ p {
   border-color: #c0392b;
   background: #fff8f7;
 }
+.form-check {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+.form-group.form-check input[type='checkbox'] {
+  appearance: auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: var(--dark-blue);
+}
+.form-group.form-check label {
+  flex: 1;
+  font-weight: 400;
+  color: var(--gray-dark);
+  margin: 0;
+}
+.form-check label a {
+  color: var(--dark-blue);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.form-check .field-error {
+  order: 3;
+  flex-basis: 100%;
+  margin-top: 0;
+}
+/* Honeypot: hidden from people, filled in by spam bots */
+.form-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 .field-error {
   color: #b42318;
   font-size: 0.8rem;

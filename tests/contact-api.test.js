@@ -9,7 +9,8 @@ const valid = {
   email: 'jean@example.com',
   phone: '+250 788 000 000',
   service_inquiry: 'contract',
-  message: 'I need help reviewing a sale agreement.'
+  message: 'I need help reviewing a sale agreement.',
+  consent: 'yes'
 };
 
 test('saves a valid contact message', async () => {
@@ -58,4 +59,22 @@ test('unknown API routes return JSON 404', async () => {
   const res = await request(app).get('/api/nothing');
   assert.equal(res.status, 404);
   assert.equal(res.body.ok, false);
+});
+
+test('requires consent to the privacy policy', async () => {
+  const { app } = createTestApp();
+  const res = await request(app)
+    .post('/api/contact')
+    .send({ ...valid, consent: undefined });
+  assert.equal(res.status, 422);
+  assert.ok(res.body.errors.consent);
+});
+
+test('silently drops submissions that fill the honeypot field', async () => {
+  const { app, db } = createTestApp();
+  const res = await request(app)
+    .post('/api/contact')
+    .send({ ...valid, website: 'http://spam.example' });
+  assert.equal(res.status, 201);
+  assert.equal(db.prepare('SELECT COUNT(*) FROM messages').pluck().get(), 0);
 });
