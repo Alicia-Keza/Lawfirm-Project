@@ -1059,6 +1059,16 @@ p {
 .form-group textarea.textarea-short {
   min-height: 100px;
 }
+.form-group [aria-invalid='true'] {
+  border-color: #c0392b;
+  background: #fff8f7;
+}
+.field-error {
+  color: #b42318;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
 .form-group .required {
   color: #c0392b;
 }
