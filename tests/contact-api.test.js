@@ -78,3 +78,14 @@ test('silently drops submissions that fill the honeypot field', async () => {
   assert.equal(res.status, 201);
   assert.equal(db.prepare('SELECT COUNT(*) FROM messages').pluck().get(), 0);
 });
+
+test('limits repeated form submissions from the same visitor', async () => {
+  const { app } = createTestApp();
+  const statuses = [];
+  for (let i = 0; i < 11; i++) {
+    const res = await request(app).post('/api/contact').send({});
+    statuses.push(res.status);
+  }
+  assert.deepEqual(statuses.slice(0, 10), Array(10).fill(422));
+  assert.equal(statuses[10], 429);
+});

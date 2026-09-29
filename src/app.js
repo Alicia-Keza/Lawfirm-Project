@@ -1,11 +1,28 @@
 const path = require('path');
 const express = require('express');
+const { rateLimit } = require('express-rate-limit');
+const config = require('./config');
 const pageRoutes = require('./routes/pages');
 const apiRoutes = require('./routes/api');
 
 function createApp({ db }) {
   const app = express();
   app.locals.db = db;
+  app.set('trust proxy', config.trustProxy);
+
+  const formLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: config.formRateLimit,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    skip: (req) => req.method !== 'POST',
+    handler: (req, res) =>
+      res.status(429).json({
+        ok: false,
+        error:
+          'Too many requests. Please wait a few minutes and try again, or call us on +250 788 308 526.'
+      })
+  });
 
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '..', 'views'));
@@ -16,7 +33,7 @@ function createApp({ db }) {
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));
 
   app.use(pageRoutes);
-  app.use('/api', apiRoutes);
+  app.use('/api', formLimiter, apiRoutes);
 
   app.use('/api', (req, res) => {
     res.status(404).json({ ok: false, error: 'Not found' });
