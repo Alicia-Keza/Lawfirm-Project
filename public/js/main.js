@@ -131,11 +131,6 @@ function showServerErrors(form, errors) {
 }
 
 async function postForm(endpoint, form) {
-  // TODO: remove once every form has an API endpoint
-  if (!endpoint) {
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    return { status: 201, body: {} };
-  }
   const payload = Object.fromEntries(new FormData(form));
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -146,7 +141,7 @@ async function postForm(endpoint, form) {
   return { status: res.status, body };
 }
 
-function setupForm(formId, { endpoint, busyText, successMessage, onSuccess }) {
+function setupForm(formId, { endpoint, busyText, successMessage, onSuccess, onConflict }) {
   const form = document.getElementById(formId);
   if (!form) return;
   form.addEventListener('input', (e) => {
@@ -168,6 +163,10 @@ function setupForm(formId, { endpoint, busyText, successMessage, onSuccess }) {
         form.reset();
         showToast(successMessage, 'success');
         if (onSuccess) onSuccess(body);
+      } else if (status === 409 && body.errors) {
+        if (onConflict) await onConflict();
+        showServerErrors(form, body.errors);
+        showToast(Object.values(body.errors)[0], 'error');
       } else if (status === 422 && body.errors) {
         showServerErrors(form, body.errors);
         showToast('Please correct the highlighted fields.', 'error');
@@ -188,10 +187,57 @@ setupForm('contactForm', {
   busyText: '⏳ Sending...',
   successMessage: 'Thank you! Your message has been received. We will contact you shortly.'
 });
+/* ===== APPOINTMENT TIME SLOTS ===== */
+const apptDate = document.getElementById('appt-date');
+const apptTime = document.getElementById('appt-time');
+
+function formatTime(time) {
+  const [h, m] = time.split(':').map(Number);
+  const suffix = h >= 12 ? 'PM' : 'AM';
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${suffix}`;
+}
+
+function setTimeOptions(placeholder, slots = []) {
+  apptTime.replaceChildren(new Option(placeholder, ''));
+  slots.forEach((slot) => {
+    const option = new Option(
+      slot.available ? formatTime(slot.time) : `${formatTime(slot.time)} (booked)`,
+      slot.time
+    );
+    option.disabled = !slot.available;
+    apptTime.add(option);
+  });
+  apptTime.disabled = slots.length === 0;
+}
+
+async function loadSlots() {
+  setFieldError(apptTime, '');
+  if (!apptDate.value) return setTimeOptions('Choose a date first');
+  setTimeOptions('Loading times...');
+  try {
+    const res = await fetch(`/api/slots?date=${encodeURIComponent(apptDate.value)}`);
+    const data = await res.json();
+    if (!data.open) {
+      setFieldError(apptDate, data.reason);
+      return setTimeOptions('No times available');
+    }
+    setFieldError(apptDate, '');
+    const free = data.slots.filter((s) => s.available).length;
+    setTimeOptions(free ? 'Select a time...' : 'Fully booked, try another day', data.slots);
+  } catch {
+    setTimeOptions('Could not load times');
+    showToast(FALLBACK_MESSAGE, 'error');
+  }
+}
+
+if (apptDate && apptTime) apptDate.addEventListener('change', loadSlots);
+
 setupForm('appointmentForm', {
-  endpoint: null,
+  endpoint: '/api/appointments',
   busyText: '⏳ Booking...',
-  successMessage: 'Appointment request received! We will confirm your booking shortly.'
+  successMessage: 'Appointment request received! We will call you to confirm.',
+  onSuccess: () => setTimeOptions('Choose a date first'),
+  onConflict: loadSlots
 });
 
 /* ===== SCROLL REVEAL ===== */
