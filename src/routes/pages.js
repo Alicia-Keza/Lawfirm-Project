@@ -1,4 +1,5 @@
 const express = require('express');
+const { bookingWindow } = require('../booking');
 
 const router = express.Router();
 
@@ -11,8 +12,15 @@ const pages = {
   '/privacy': 'privacy'
 };
 
+// Extra data some pages need when rendering
+const pageLocals = {
+  contact: () => ({ bookingWindow: bookingWindow() })
+};
+
 Object.entries(pages).forEach(([route, view]) => {
-  router.get(route, (req, res) => res.render(`pages/${view}`));
+  router.get(route, (req, res) => {
+    res.render(`pages/${view}`, pageLocals[view] ? pageLocals[view]() : {});
+  });
 });
 
 // Keep old .html links working

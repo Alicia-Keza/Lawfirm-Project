@@ -162,7 +162,7 @@
               <div class="form-row">
                 <div class="form-group">
                   <label for="appt-date">Preferred Date <span class="required" aria-hidden="true">*</span></label>
-                  <input type="date" id="appt-date" name="date" required min="" />
+                  <input type="date" id="appt-date" name="date" required min="<%= bookingWindow.min %>" max="<%= bookingWindow.max %>" />
                 </div>
                 <div class="form-group">
                   <label for="appt-time">Preferred Time <span class="required" aria-hidden="true">*</span></label>
@@ -211,14 +211,5 @@
 </main>
 
 <%- include('../partials/footer', { activePage: 'contact' }) %>
-  <script>
-    // Set min date for appointment to tomorrow
-    const dateInput = document.getElementById('appt-date');
-    if (dateInput) {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      dateInput.min = tomorrow.toISOString().split('T')[0];
-    }
-  </script>
 </body>
 </html>

@@ -39,3 +39,11 @@ test('unknown pages return the 404 page', async () => {
   assert.equal(res.status, 404);
   assert.match(res.text, /Page Not Found/);
 });
+
+test('appointment date picker is limited to the Kigali booking window', async () => {
+  const { bookingWindow } = require('../src/booking');
+  const { min, max } = bookingWindow();
+  const res = await request(app).get('/contact');
+  assert.match(res.text, new RegExp(`id="appt-date"[^>]*min="${min}" max="${max}"`));
+  assert.doesNotMatch(res.text, /toISOString/);
+});
