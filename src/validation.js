@@ -1,3 +1,5 @@
+const { checkBookableDate, slotsForDate } = require('./booking');
+
 const SERVICES = [
   'notarial',
   'legal-advisory',
@@ -66,4 +68,41 @@ function isSpam(body = {}) {
   return typeof body.website === 'string' && body.website.trim() !== '';
 }
 
-module.exports = { SERVICES, clean, isEmail, isPhone, hasConsent, isSpam, validateContact };
+function validateAppointment(body = {}, now = new Date()) {
+  const data = {
+    full_name: clean(body.full_name, 120),
+    phone: clean(body.phone, 30),
+    email: clean(body.email, 254),
+    service: clean(body.service, 40),
+    date: clean(body.date, 10),
+    time: clean(body.time, 5),
+    notes: clean(body.notes, 1000)
+  };
+  const errors = {};
+
+  if (!data.full_name) errors.full_name = 'Please enter your full name.';
+  if (!data.phone) errors.phone = 'Please enter your phone number.';
+  else if (!isPhone(data.phone)) errors.phone = 'Please enter a valid phone number.';
+  if (data.email && !isEmail(data.email)) errors.email = 'Please enter a valid email address.';
+  if (!SERVICES.includes(data.service)) errors.service = 'Please choose a service from the list.';
+
+  const dateError = checkBookableDate(data.date, now);
+  if (dateError) errors.date = dateError;
+  else if (!slotsForDate(data.date).includes(data.time)) {
+    errors.time = 'Please choose one of the available times.';
+  }
+  if (!hasConsent(body)) errors.consent = CONSENT_ERROR;
+
+  return { data, errors, valid: Object.keys(errors).length === 0 };
+}
+
+module.exports = {
+  SERVICES,
+  clean,
+  isEmail,
+  isPhone,
+  hasConsent,
+  isSpam,
+  validateContact,
+  validateAppointment
+};
