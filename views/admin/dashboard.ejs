@@ -1,0 +1,17 @@
+<%- include('partials/head', { title: 'Overview' }) %>
+<%- include('partials/header', { section: 'overview' }) %>
+<main class="admin-container admin-main">
+  <h1>Welcome, <%= admin.name %></h1>
+  <div class="admin-stats">
+    <div class="admin-card admin-stat">
+      <span class="admin-stat-num"><%= counts.pendingAppointments %></span>
+      <span class="admin-stat-label">Appointments waiting for confirmation</span>
+    </div>
+    <div class="admin-card admin-stat">
+      <span class="admin-stat-num"><%= counts.newMessages %></span>
+      <span class="admin-stat-label">New messages</span>
+    </div>
+  </div>
+</main>
+</body>
+</html>

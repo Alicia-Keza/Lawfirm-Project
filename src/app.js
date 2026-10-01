@@ -4,6 +4,7 @@ const { rateLimit } = require('express-rate-limit');
 const config = require('./config');
 const pageRoutes = require('./routes/pages');
 const apiRoutes = require('./routes/api');
+const adminRoutes = require('./routes/admin');
 
 function createApp({ db, mailer }) {
   const app = express();
@@ -35,6 +36,7 @@ function createApp({ db, mailer }) {
 
   app.use(pageRoutes);
   app.use('/api', formLimiter, apiRoutes);
+  app.use('/admin', adminRoutes);
 
   app.use('/api', (req, res) => {
     res.status(404).json({ ok: false, error: 'Not found' });
