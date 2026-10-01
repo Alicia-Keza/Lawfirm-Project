@@ -5,9 +5,10 @@ const config = require('./config');
 const pageRoutes = require('./routes/pages');
 const apiRoutes = require('./routes/api');
 
-function createApp({ db }) {
+function createApp({ db, mailer }) {
   const app = express();
   app.locals.db = db;
+  app.locals.mailer = mailer;
   app.set('trust proxy', config.trustProxy);
 
   const formLimiter = rateLimit({

@@ -19,6 +19,8 @@ router.post('/contact', (req, res) => {
     )
     .run({ ...data, phone: data.phone || null, service: data.service || null });
 
+  // Emails are sent in the background; failures are logged, not shown to the visitor
+  req.app.locals.mailer.newMessage(data);
   res.status(201).json({ ok: true, id: result.lastInsertRowid });
 });
 
@@ -41,6 +43,7 @@ router.post('/appointments', (req, res) => {
          VALUES (@full_name, @phone, @email, @service, @date, @time, @notes)`
       )
       .run({ ...data, email: data.email || null, notes: data.notes || null });
+    req.app.locals.mailer.newAppointment(data);
     res.status(201).json({ ok: true, id: result.lastInsertRowid });
   } catch (err) {
     if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
