@@ -1,0 +1,60 @@
+<%- include('partials/head', { title: 'Appointments' }) %>
+<%- include('partials/header', { section: 'appointments' }) %>
+<main class="admin-container admin-main">
+  <h1>Appointments</h1>
+
+  <form method="get" action="/admin/appointments" class="admin-filters">
+    <label>
+      Show
+      <select name="when">
+        <option value="upcoming"<% if (filters.when === 'upcoming') { %> selected<% } %>>Upcoming</option>
+        <option value="past"<% if (filters.when === 'past') { %> selected<% } %>>Past</option>
+      </select>
+    </label>
+    <label>
+      Status
+      <select name="status">
+        <option value="all">All</option>
+        <% statuses.forEach(s => { %>
+        <option value="<%= s %>"<% if (filters.status === s) { %> selected<% } %>><%= s[0].toUpperCase() + s.slice(1) %></option>
+        <% }) %>
+      </select>
+    </label>
+    <button type="submit" class="admin-btn">Filter</button>
+  </form>
+
+  <% if (appointments.length === 0) { %>
+  <div class="admin-card admin-empty">No appointments match these filters.</div>
+  <% } else { %>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Client</th>
+          <th scope="col">Service</th>
+          <th scope="col">Notes</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% appointments.forEach(a => { %>
+        <tr>
+          <td class="admin-nowrap"><strong><%= a.date %></strong><br><%= a.time %></td>
+          <td>
+            <strong><%= a.full_name %></strong><br>
+            <a href="tel:<%= a.phone.replace(/[^\d+]/g, '') %>"><%= a.phone %></a>
+            <% if (a.email) { %><br><a href="mailto:<%= a.email %>"><%= a.email %></a><% } %>
+          </td>
+          <td><%= serviceNames[a.service] || a.service %></td>
+          <td class="admin-notes"><%= a.notes || '–' %></td>
+          <td><span class="admin-badge admin-badge-<%= a.status %>"><%= a.status %></span></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+</main>
+</body>
+</html>

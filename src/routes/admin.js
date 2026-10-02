@@ -1,6 +1,8 @@
 const express = require('express');
 const { rateLimit } = require('express-rate-limit');
 const { verifyPassword, hashPassword } = require('../passwords');
+const { todayInKigali } = require('../booking');
+const { SERVICE_NAMES } = require('../mailer');
 const {
   createSession,
   setSessionCookie,
@@ -89,6 +91,31 @@ router.get('/', requireAdmin, (req, res) => {
       .get()
   };
   res.render('admin/dashboard', { counts });
+});
+
+/* ===== APPOINTMENTS ===== */
+const APPOINTMENT_STATUSES = ['pending', 'confirmed', 'cancelled', 'completed'];
+
+router.get('/appointments', requireAdmin, (req, res) => {
+  const { db } = req.app.locals;
+  const when = req.query.when === 'past' ? 'past' : 'upcoming';
+  const status = APPOINTMENT_STATUSES.includes(req.query.status) ? req.query.status : 'all';
+  const today = todayInKigali();
+
+  const where = [when === 'past' ? 'date < @today' : 'date >= @today'];
+  if (status !== 'all') where.push('status = @status');
+  const order = when === 'past' ? 'date DESC, time DESC' : 'date ASC, time ASC';
+
+  const appointments = db
+    .prepare(`SELECT * FROM appointments WHERE ${where.join(' AND ')} ORDER BY ${order} LIMIT 200`)
+    .all({ today, status });
+
+  res.render('admin/appointments', {
+    appointments,
+    filters: { when, status },
+    statuses: APPOINTMENT_STATUSES,
+    serviceNames: SERVICE_NAMES
+  });
 });
 
 module.exports = router;

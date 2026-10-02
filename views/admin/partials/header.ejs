@@ -3,6 +3,7 @@
       <a href="/admin" class="admin-brand">⚖️ Rutabanks Admin</a>
       <nav class="admin-nav" aria-label="Admin navigation">
         <a href="/admin"<% if (section === 'overview') { %> aria-current="page"<% } %>>Overview</a>
+        <a href="/admin/appointments"<% if (section === 'appointments') { %> aria-current="page"<% } %>>Appointments</a>
       </nav>
       <form method="post" action="/admin/logout" class="admin-logout">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>" />

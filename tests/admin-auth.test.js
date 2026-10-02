@@ -87,3 +87,27 @@ test('signing out needs the CSRF token and ends the session', async () => {
   const after = await agent.get('/admin');
   assert.equal(after.status, 303);
 });
+
+test('lists upcoming appointments and filters by status', async () => {
+  const { app, db } = await setup();
+  const { todayInKigali, addDays } = require('../src/booking');
+  const insert = db.prepare(
+    `INSERT INTO appointments (full_name, phone, service, date, time, status)
+     VALUES (?, '+250788000000', 'notarial', ?, '09:00', ?)`
+  );
+  insert.run('Future Client', addDays(todayInKigali(), 3), 'pending');
+  insert.run('Old Client', addDays(todayInKigali(), -3), 'completed');
+
+  const { agent } = await signIn(app);
+  const upcoming = await agent.get('/admin/appointments');
+  assert.equal(upcoming.status, 200);
+  assert.match(upcoming.text, /Future Client/);
+  assert.doesNotMatch(upcoming.text, /Old Client/);
+  assert.match(upcoming.text, /Notarial Services/);
+
+  const past = await agent.get('/admin/appointments?when=past&status=completed');
+  assert.match(past.text, /Old Client/);
+
+  const none = await agent.get('/admin/appointments?status=confirmed');
+  assert.match(none.text, /No appointments match/);
+});
