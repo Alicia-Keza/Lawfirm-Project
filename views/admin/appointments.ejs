@@ -2,6 +2,9 @@
 <%- include('partials/header', { section: 'appointments' }) %>
 <main class="admin-container admin-main">
   <h1>Appointments</h1>
+  <% if (notice) { %>
+  <p class="admin-notice admin-notice-<%= notice.type %>" role="status"><%= notice.text %></p>
+  <% } %>
 
   <form method="get" action="/admin/appointments" class="admin-filters">
     <label>
@@ -48,7 +51,25 @@
           </td>
           <td><%= serviceNames[a.service] || a.service %></td>
           <td class="admin-notes"><%= a.notes || '–' %></td>
-          <td><span class="admin-badge admin-badge-<%= a.status %>"><%= a.status %></span></td>
+          <td>
+            <span class="admin-badge admin-badge-<%= a.status %>"><%= a.status %></span>
+            <form method="post" action="/admin/appointments/<%= a.id %>/status" class="admin-actions">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+              <input type="hidden" name="returnTo" value="<%= returnTo %>" />
+              <% if (a.status === 'pending') { %>
+              <button type="submit" name="status" value="confirmed" class="admin-btn">Confirm</button>
+              <% } %>
+              <% if (a.status === 'confirmed') { %>
+              <button type="submit" name="status" value="completed" class="admin-btn">Mark done</button>
+              <% } %>
+              <% if (a.status === 'pending' || a.status === 'confirmed') { %>
+              <button type="submit" name="status" value="cancelled" class="admin-btn admin-btn-outline" data-confirm="Cancel this appointment? The client will be emailed if they gave an address.">Cancel</button>
+              <% } %>
+              <% if (a.status === 'cancelled') { %>
+              <button type="submit" name="status" value="pending" class="admin-btn admin-btn-outline">Reopen</button>
+              <% } %>
+            </form>
+          </td>
         </tr>
         <% }) %>
       </tbody>

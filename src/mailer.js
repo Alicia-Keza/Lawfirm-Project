@@ -102,6 +102,28 @@ function createMailer({ transport = createTransport(), mail = config.mail, log =
         );
       }
       return Promise.all(jobs);
+    },
+
+    // Tells the client when the firm confirms or cancels their appointment
+    appointmentStatusChanged(appt) {
+      if (!appt.email || !['confirmed', 'cancelled'].includes(appt.status)) {
+        return Promise.resolve([]);
+      }
+      const when = `${appt.date} at ${appt.time}`;
+      const text =
+        appt.status === 'confirmed'
+          ? `Dear ${appt.full_name},\n\nYour appointment on ${when} (${serviceName(appt.service)}) is confirmed. Please bring a valid ID and the original documents related to your matter.\n\nIf you can no longer come, please call us so we can offer the time to someone else.\n${SIGNATURE}`
+          : `Dear ${appt.full_name},\n\nUnfortunately your appointment on ${when} has been cancelled. Please call us or book a new time on our website.\n${SIGNATURE}`;
+      return Promise.all([
+        send({
+          to: appt.email,
+          subject:
+            appt.status === 'confirmed'
+              ? `Appointment confirmed: ${when}`
+              : `Appointment cancelled: ${when}`,
+          text
+        })
+      ]);
     }
   };
 }

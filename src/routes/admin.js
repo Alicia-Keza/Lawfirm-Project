@@ -114,8 +114,48 @@ router.get('/appointments', requireAdmin, (req, res) => {
     appointments,
     filters: { when, status },
     statuses: APPOINTMENT_STATUSES,
-    serviceNames: SERVICE_NAMES
+    serviceNames: SERVICE_NAMES,
+    notice: NOTICES[req.query.notice] || null,
+    returnTo: req.originalUrl
   });
+});
+
+const NOTICES = {
+  updated: { type: 'success', text: 'Appointment updated.' },
+  'slot-taken': {
+    type: 'error',
+    text: 'That time has been booked by someone else, so this appointment cannot be reopened.'
+  },
+  invalid: { type: 'error', text: 'That change is not allowed.' }
+};
+
+function backTo(returnTo, notice) {
+  const base =
+    typeof returnTo === 'string' && returnTo.startsWith('/admin/appointments')
+      ? returnTo.replace(/([?&])notice=[^&]*&?/, '$1').replace(/[?&]$/, '')
+      : '/admin/appointments';
+  return `${base}${base.includes('?') ? '&' : '?'}notice=${notice}`;
+}
+
+router.post('/appointments/:id/status', requireAdmin, verifyCsrf, (req, res) => {
+  const { db, mailer } = req.app.locals;
+  const { status, returnTo } = req.body;
+  const appt = db.prepare('SELECT * FROM appointments WHERE id = ?').get(req.params.id);
+  if (!appt || !APPOINTMENT_STATUSES.includes(status)) {
+    return res.redirect(303, backTo(returnTo, 'invalid'));
+  }
+
+  try {
+    db.prepare('UPDATE appointments SET status = ? WHERE id = ?').run(status, appt.id);
+  } catch (err) {
+    if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+      return res.redirect(303, backTo(returnTo, 'slot-taken'));
+    }
+    throw err;
+  }
+
+  if (status !== appt.status) mailer.appointmentStatusChanged({ ...appt, status });
+  res.redirect(303, backTo(returnTo, 'updated'));
 });
 
 module.exports = router;

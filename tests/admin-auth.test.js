@@ -111,3 +111,69 @@ test('lists upcoming appointments and filters by status', async () => {
   const none = await agent.get('/admin/appointments?status=confirmed');
   assert.match(none.text, /No appointments match/);
 });
+
+test('confirming an appointment updates it and emails the client', async () => {
+  const { app, db, sentEmails } = await setup();
+  const { todayInKigali, addDays } = require('../src/booking');
+  const date = addDays(todayInKigali(), 3);
+  const { lastInsertRowid: id } = db
+    .prepare(
+      `INSERT INTO appointments (full_name, phone, email, service, date, time)
+       VALUES ('Aline', '+250788000000', 'aline@example.com', 'notarial', ?, '10:00')`
+    )
+    .run(date);
+
+  const { agent } = await signIn(app);
+  const page = await agent.get('/admin/appointments');
+  const csrf = csrfFrom(page.text);
+
+  const forged = await agent.post(`/admin/appointments/${id}/status`).type('form').send({
+    status: 'confirmed'
+  });
+  assert.equal(forged.status, 403);
+
+  const res = await agent
+    .post(`/admin/appointments/${id}/status`)
+    .type('form')
+    .send({ _csrf: csrf, status: 'confirmed', returnTo: '/admin/appointments?status=pending' });
+  assert.equal(res.status, 303);
+  assert.equal(res.headers.location, '/admin/appointments?status=pending&notice=updated');
+  assert.equal(
+    db.prepare('SELECT status FROM appointments WHERE id = ?').pluck().get(id),
+    'confirmed'
+  );
+
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(sentEmails.length, 1);
+  assert.match(sentEmails[0].subject, /Appointment confirmed/);
+});
+
+test('cannot reopen a cancelled appointment whose slot was taken', async () => {
+  const { app, db } = await setup();
+  const { todayInKigali, addDays } = require('../src/booking');
+  const date = addDays(todayInKigali(), 3);
+  const insert = db.prepare(
+    `INSERT INTO appointments (full_name, phone, service, date, time, status)
+     VALUES (?, '+250788000000', 'notarial', ?, '10:00', ?)`
+  );
+  const { lastInsertRowid: cancelledId } = insert.run('First', date, 'cancelled');
+  insert.run('Second', date, 'pending');
+
+  const { agent } = await signIn(app);
+  const csrf = csrfFrom((await agent.get('/admin/appointments')).text);
+  const res = await agent
+    .post(`/admin/appointments/${cancelledId}/status`)
+    .type('form')
+    .send({ _csrf: csrf, status: 'pending' });
+  assert.match(res.headers.location, /notice=slot-taken/);
+  assert.equal(
+    db.prepare('SELECT status FROM appointments WHERE id = ?').pluck().get(cancelledId),
+    'cancelled'
+  );
+
+  const invalid = await agent
+    .post(`/admin/appointments/${cancelledId}/status`)
+    .type('form')
+    .send({ _csrf: csrf, status: 'deleted' });
+  assert.match(invalid.headers.location, /notice=invalid/);
+});
