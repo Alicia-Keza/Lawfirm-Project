@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const { rateLimit } = require('express-rate-limit');
 const config = require('./config');
+const { formatDateTime } = require('./format');
 const pageRoutes = require('./routes/pages');
 const apiRoutes = require('./routes/api');
 const adminRoutes = require('./routes/admin');
@@ -10,6 +11,7 @@ function createApp({ db, mailer }) {
   const app = express();
   app.locals.db = db;
   app.locals.mailer = mailer;
+  app.locals.formatDateTime = formatDateTime;
   app.set('trust proxy', config.trustProxy);
 
   const formLimiter = rateLimit({
