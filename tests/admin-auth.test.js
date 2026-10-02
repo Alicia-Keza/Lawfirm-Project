@@ -177,3 +177,33 @@ test('cannot reopen a cancelled appointment whose slot was taken', async () => {
     .send({ _csrf: csrf, status: 'deleted' });
   assert.match(invalid.headers.location, /notice=invalid/);
 });
+
+test('messages inbox: read, archive and escaping of visitor text', async () => {
+  const { app, db } = await setup();
+  const { lastInsertRowid: id } = db
+    .prepare(
+      `INSERT INTO messages (first_name, last_name, email, message)
+       VALUES ('Jean', 'M', 'jean@example.com', '<script>alert(1)</script> please call me')`
+    )
+    .run();
+
+  const { agent } = await signIn(app);
+  const inbox = await agent.get('/admin/messages');
+  assert.equal(inbox.status, 200);
+  assert.match(inbox.text, /&lt;script&gt;alert\(1\)&lt;\/script&gt; please call me/);
+  assert.doesNotMatch(inbox.text, /<script>alert/);
+
+  const csrf = csrfFrom(inbox.text);
+  await agent
+    .post(`/admin/messages/${id}/status`)
+    .type('form')
+    .send({ _csrf: csrf, status: 'read' });
+  assert.equal(db.prepare('SELECT status FROM messages WHERE id = ?').pluck().get(id), 'read');
+
+  await agent
+    .post(`/admin/messages/${id}/status`)
+    .type('form')
+    .send({ _csrf: csrf, status: 'archived' });
+  assert.doesNotMatch((await agent.get('/admin/messages')).text, /please call me/);
+  assert.match((await agent.get('/admin/messages?view=archived')).text, /please call me/);
+});

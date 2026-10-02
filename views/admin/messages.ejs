@@ -1,0 +1,48 @@
+<%- include('partials/head', { title: 'Messages' }) %>
+<%- include('partials/header', { section: 'messages' }) %>
+<main class="admin-container admin-main">
+  <h1>Messages</h1>
+
+  <nav class="admin-tabs" aria-label="Message folders">
+    <a href="/admin/messages?view=inbox"<% if (view === 'inbox') { %> aria-current="page"<% } %>>Inbox</a>
+    <a href="/admin/messages?view=new"<% if (view === 'new') { %> aria-current="page"<% } %>>Unread</a>
+    <a href="/admin/messages?view=archived"<% if (view === 'archived') { %> aria-current="page"<% } %>>Archived</a>
+  </nav>
+
+  <% if (messages.length === 0) { %>
+  <div class="admin-card admin-empty">No messages here.</div>
+  <% } %>
+
+  <div class="admin-messages">
+    <% messages.forEach(m => { %>
+    <article class="admin-card admin-message<% if (m.status === 'new') { %> admin-message-new<% } %>">
+      <header class="admin-message-head">
+        <div>
+          <h2><%= m.first_name %> <%= m.last_name %><% if (m.status === 'new') { %> <span class="admin-badge admin-badge-pending">new</span><% } %></h2>
+          <p class="admin-message-meta">
+            <a href="mailto:<%= m.email %>"><%= m.email %></a>
+            <% if (m.phone) { %> · <a href="tel:<%= m.phone.replace(/[^\d+]/g, '') %>"><%= m.phone %></a><% } %>
+            <% if (m.service) { %> · <%= serviceNames[m.service] || m.service %><% } %>
+          </p>
+        </div>
+        <time class="admin-message-date" datetime="<%= m.created_at.replace(' ', 'T') %>Z"><%= m.created_at.slice(0, 16) %> UTC</time>
+      </header>
+      <p class="admin-message-body"><%= m.message %></p>
+      <form method="post" action="/admin/messages/<%= m.id %>/status" class="admin-actions">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <input type="hidden" name="view" value="<%= view %>" />
+        <% if (m.status === 'new') { %>
+        <button type="submit" name="status" value="read" class="admin-btn">Mark as read</button>
+        <% } %>
+        <% if (m.status !== 'archived') { %>
+        <button type="submit" name="status" value="archived" class="admin-btn admin-btn-outline">Archive</button>
+        <% } else { %>
+        <button type="submit" name="status" value="read" class="admin-btn admin-btn-outline">Move to inbox</button>
+        <% } %>
+      </form>
+    </article>
+    <% }) %>
+  </div>
+</main>
+</body>
+</html>

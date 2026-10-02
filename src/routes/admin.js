@@ -158,4 +158,32 @@ router.post('/appointments/:id/status', requireAdmin, verifyCsrf, (req, res) => 
   res.redirect(303, backTo(returnTo, 'updated'));
 });
 
+/* ===== MESSAGES ===== */
+const MESSAGE_VIEWS = {
+  inbox: "status IN ('new', 'read')",
+  new: "status = 'new'",
+  archived: "status = 'archived'"
+};
+
+router.get('/messages', requireAdmin, (req, res) => {
+  const view = MESSAGE_VIEWS[req.query.view] ? req.query.view : 'inbox';
+  const messages = req.app.locals.db
+    .prepare(
+      `SELECT * FROM messages WHERE ${MESSAGE_VIEWS[view]} ORDER BY created_at DESC LIMIT 200`
+    )
+    .all();
+  res.render('admin/messages', { messages, view, serviceNames: SERVICE_NAMES });
+});
+
+router.post('/messages/:id/status', requireAdmin, verifyCsrf, (req, res) => {
+  const { status } = req.body;
+  const view = MESSAGE_VIEWS[req.body.view] ? req.body.view : 'inbox';
+  if (['new', 'read', 'archived'].includes(status)) {
+    req.app.locals.db
+      .prepare('UPDATE messages SET status = ? WHERE id = ?')
+      .run(status, req.params.id);
+  }
+  res.redirect(303, `/admin/messages?view=${view}`);
+});
+
 module.exports = router;

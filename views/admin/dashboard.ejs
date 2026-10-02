@@ -3,14 +3,14 @@
 <main class="admin-container admin-main">
   <h1>Welcome, <%= admin.name %></h1>
   <div class="admin-stats">
-    <div class="admin-card admin-stat">
+    <a class="admin-card admin-stat" href="/admin/appointments?status=pending">
       <span class="admin-stat-num"><%= counts.pendingAppointments %></span>
       <span class="admin-stat-label">Appointments waiting for confirmation</span>
-    </div>
-    <div class="admin-card admin-stat">
+    </a>
+    <a class="admin-card admin-stat" href="/admin/messages?view=new">
       <span class="admin-stat-num"><%= counts.newMessages %></span>
       <span class="admin-stat-label">New messages</span>
-    </div>
+    </a>
   </div>
 </main>
 </body>
