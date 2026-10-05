@@ -232,6 +232,17 @@ async function loadSlots() {
 
 if (apptDate && apptTime) apptDate.addEventListener('change', loadSlots);
 
+// Pre-select the service when arriving from a service page (/contact?service=contract)
+const requestedService = new URLSearchParams(window.location.search).get('service');
+if (requestedService) {
+  ['appt-service', 'service-inquiry'].forEach((id) => {
+    const select = document.getElementById(id);
+    if (select && [...select.options].some((o) => o.value === requestedService)) {
+      select.value = requestedService;
+    }
+  });
+}
+
 setupForm('appointmentForm', {
   endpoint: '/api/appointments',
   busyText: '⏳ Booking...',

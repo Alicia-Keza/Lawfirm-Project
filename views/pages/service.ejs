@@ -1,0 +1,93 @@
+<%- include('../partials/head', { title: `${service.title} – Rutabanks Notary and Legal Services Ltd`, description: service.description, activePage: 'services' }) %>
+<%- include('../partials/navbar', { activePage: 'services' }) %>
+<main id="main">
+
+  <!-- PAGE HERO -->
+  <header class="page-hero" aria-labelledby="service-title">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="section-label"><%= service.category.title %></span>
+        <h1 id="service-title"><%= service.title %></h1>
+        <p><%= service.description %></p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">›</span>
+          <a href="/services">Services</a>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page"><%= service.title %></span>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- DETAILS -->
+  <section class="section" aria-labelledby="how-heading">
+    <div class="container">
+      <div class="service-detail">
+        <div class="service-detail-main">
+          <h2 id="how-heading">How It Works</h2>
+          <ol class="steps">
+            <li>
+              <strong>Book an appointment</strong>
+              <span>Choose a time online or call us. We confirm every booking by phone within one business day.</span>
+            </li>
+            <li>
+              <strong>Bring your documents</strong>
+              <span>Bring a valid national ID or passport and the original documents related to your matter.</span>
+            </li>
+            <li>
+              <strong>We review and advise</strong>
+              <span>We go through your documents with you, explain what is needed and answer your questions.</span>
+            </li>
+            <li>
+              <strong>Completion</strong>
+              <span>We complete the work accurately and confidentially, in line with Rwandan law.</span>
+            </li>
+          </ol>
+
+          <div class="disclaimer-box" role="note" aria-label="Legal notice">
+            <p class="disclaimer-box-title">⚖️ Please note</p>
+            <p>This page is general information, not legal advice. Every matter is different. <a href="/contact">Contact us</a> to discuss your situation.</p>
+          </div>
+        </div>
+
+        <aside class="service-detail-side" aria-label="Book this service">
+          <div class="service-section-label">
+            <span class="svc-icon" aria-hidden="true"><%= service.icon %></span>
+            <p class="service-side-title"><%= service.title %></p>
+            <p>Ready to get started? Book a meeting at our Kigali office.</p>
+            <a href="/contact?service=<%= service.formService %>#appointment" class="btn btn-primary">📅 Book This Service</a>
+            <a href="tel:+250788308526" class="btn btn-outline">📞 Call +250 788 308 526</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <% if (related.length) { %>
+  <!-- RELATED -->
+  <section class="section section-alt" aria-labelledby="related-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">More <%= service.category.title %></span>
+        <h2 id="related-heading">Related Services</h2>
+        <div class="divider" aria-hidden="true"></div>
+      </div>
+      <div class="services-grid">
+        <% related.forEach(item => { %>
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true"><%= item.icon %></div>
+          <h3><a href="/services/<%= item.slug %>"><%= item.title %></a></h3>
+          <p><%= item.description %></p>
+        </article>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+</main>
+
+<%- include('../partials/footer', { activePage: 'services' }) %>
+</body>
+</html>

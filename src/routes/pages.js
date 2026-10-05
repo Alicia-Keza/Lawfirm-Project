@@ -1,6 +1,6 @@
 const express = require('express');
 const { bookingWindow } = require('../booking');
-const { categories } = require('../data/services');
+const { categories, findService } = require('../data/services');
 
 const router = express.Router();
 
@@ -23,6 +23,13 @@ Object.entries(pages).forEach(([route, view]) => {
   router.get(route, (req, res) => {
     res.render(`pages/${view}`, pageLocals[view] ? pageLocals[view]() : {});
   });
+});
+
+router.get('/services/:slug', (req, res, next) => {
+  const service = findService(req.params.slug);
+  if (!service) return next();
+  const related = service.category.services.filter((s) => s.slug !== service.slug);
+  res.render('pages/service', { service, related });
 });
 
 // Keep old .html links working

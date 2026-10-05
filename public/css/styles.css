@@ -935,6 +935,74 @@ p {
   font-size: 0.88rem;
 }
 
+/* ===== SERVICE DETAIL PAGE ===== */
+.service-item h4 a:hover,
+.service-card h3 a:hover {
+  color: var(--light-blue);
+  text-decoration: underline;
+}
+.service-detail {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.service-detail-main h2 {
+  margin-bottom: 24px;
+}
+.steps {
+  list-style: none;
+  counter-reset: step;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  column-gap: 16px;
+}
+.steps li::before {
+  content: counter(step);
+  grid-row: span 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--dark-blue);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.steps strong {
+  color: var(--dark-blue);
+}
+.steps span {
+  color: var(--gray-dark);
+  font-size: 0.95rem;
+}
+.service-detail-side .service-section-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.service-detail-side .btn {
+  width: 100%;
+  justify-content: center;
+  white-space: normal;
+}
+.service-section-label .service-side-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 /* ===== CONTACT PAGE ===== */
 .contact-grid {
   display: grid;
@@ -1373,6 +1441,9 @@ p {
     position: static;
   }
   .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .service-detail {
     grid-template-columns: 1fr;
   }
 }

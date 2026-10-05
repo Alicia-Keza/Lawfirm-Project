@@ -47,3 +47,16 @@ test('appointment date picker is limited to the Kigali booking window', async ()
   assert.match(res.text, new RegExp(`id="appt-date"[^>]*min="${min}" max="${max}"`));
   assert.doesNotMatch(res.text, /toISOString/);
 });
+
+test('each service has its own page with a booking link', async () => {
+  const { allServices } = require('../src/data/services');
+  assert.equal(allServices.length, 12);
+  for (const service of allServices) {
+    const res = await request(app).get(`/services/${service.slug}`);
+    assert.equal(res.status, 200, service.slug);
+    assert.ok(res.text.includes(`/contact?service=${service.formService}#appointment`));
+  }
+  const services = await request(app).get('/services');
+  assert.match(services.text, /href="\/services\/power-of-attorney"/);
+  assert.equal((await request(app).get('/services/not-a-service')).status, 404);
+});
