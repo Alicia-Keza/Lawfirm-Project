@@ -1413,6 +1413,13 @@ p {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
   .why-grid {
     grid-template-columns: 1fr;
   }
@@ -1451,13 +1458,6 @@ p {
 @media (max-width: 768px) {
   .section {
     padding: 72px 0;
-  }
-  .nav-links,
-  .nav-cta {
-    display: none;
-  }
-  .hamburger {
-    display: flex;
   }
   .hero-stats {
     gap: 24px;
