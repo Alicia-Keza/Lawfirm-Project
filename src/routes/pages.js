@@ -1,6 +1,7 @@
 const express = require('express');
 const { bookingWindow } = require('../booking');
 const { categories, findService } = require('../data/services');
+const { faq } = require('../data/faq');
 
 const router = express.Router();
 
@@ -10,13 +11,15 @@ const pages = {
   '/services': 'services',
   '/contact': 'contact',
   '/disclaimer': 'disclaimer',
-  '/privacy': 'privacy'
+  '/privacy': 'privacy',
+  '/faq': 'faq'
 };
 
 // Extra data some pages need when rendering
 const pageLocals = {
   contact: () => ({ bookingWindow: bookingWindow() }),
-  services: () => ({ categories })
+  services: () => ({ categories }),
+  faq: () => ({ faq })
 };
 
 Object.entries(pages).forEach(([route, view]) => {

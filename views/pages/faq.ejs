@@ -1,0 +1,40 @@
+<%- include('../partials/head', { title: "Frequently Asked Questions – Rutabanks Notary and Legal Services Ltd", description: "Answers about office hours, booking appointments, what to bring, fees and how we handle your information.", activePage: 'faq' }) %>
+<%- include('../partials/navbar', { activePage: 'faq' }) %>
+<main id="main">
+
+  <!-- PAGE HERO -->
+  <header class="page-hero" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="page-hero-content">
+        <span class="section-label">Help</span>
+        <h1 id="faq-title">Frequently Asked Questions</h1>
+        <p>Quick answers about appointments, documents, fees and how we work.</p>
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">›</span>
+          <span aria-current="page">FAQ</span>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- QUESTIONS -->
+  <section class="section" aria-label="Questions and answers">
+    <div class="container">
+      <div class="faq-list">
+        <% faq.forEach((item, i) => { %>
+        <details class="faq-item"<% if (i === 0) { %> open<% } %>>
+          <summary><h2><%= item.question %></h2></summary>
+          <p><%= item.answer %></p>
+        </details>
+        <% }) %>
+      </div>
+      <p class="section-cta">Still have a question? <a href="/contact" class="text-link">Send us a message</a> or call <a href="tel:+250788308526" class="text-link">+250 788 308 526</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<%- include('../partials/footer', { activePage: 'faq' }) %>
+</body>
+</html>

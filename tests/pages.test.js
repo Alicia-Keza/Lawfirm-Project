@@ -11,7 +11,8 @@ const pages = [
   ['/services', 'Our Services'],
   ['/contact', 'Contact Us'],
   ['/disclaimer', 'Legal Disclaimer'],
-  ['/privacy', 'Privacy Policy']
+  ['/privacy', 'Privacy Policy'],
+  ['/faq', 'Frequently Asked Questions']
 ];
 
 for (const [url, title] of pages) {
