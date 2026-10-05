@@ -22,130 +22,28 @@
   <section class="section" aria-label="All services">
     <div class="container">
       <div class="services-full">
-
-        <!-- NOTARIAL SERVICES -->
-        <div class="service-section" id="notarial">
-          <div class="service-section-label" aria-label="Notarial services category">
-            <span class="svc-icon" aria-hidden="true">📜</span>
-            <h3>Notarial Services</h3>
-            <p>Official certification, authentication, and verification of legal documents and instruments.</p>
+        <% categories.forEach(category => { %>
+        <div class="service-section" id="<%= category.id %>">
+          <div class="service-section-label" aria-label="<%= category.title %> category">
+            <span class="svc-icon" aria-hidden="true"><%= category.icon %></span>
+            <h3><%= category.title %></h3>
+            <p><%= category.summary %></p>
           </div>
           <div class="service-section-content">
             <div class="service-items">
+              <% category.services.forEach(service => { %>
               <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">✅</div>
+                <div class="service-item-icon" aria-hidden="true"><%= service.icon %></div>
                 <div>
-                  <h4>Certification of Documents &amp; Copies</h4>
-                  <p>We certify original documents and true copies of documents, verifying their authenticity for use in legal, administrative, and official contexts both locally and internationally.</p>
+                  <h4><%= service.title %></h4>
+                  <p><%= service.description %></p>
                 </div>
               </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">✍️</div>
-                <div>
-                  <h4>Authentication of Signatures</h4>
-                  <p>We verify and authenticate signatures on documents, confirming the identity of signatories and the validity of their consent for legally binding purposes.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">📋</div>
-                <div>
-                  <h4>Notarization of Agreements &amp; Contracts</h4>
-                  <p>Legal agreements and contracts are formally notarized to give them official legal standing, making them enforceable and recognized by courts and authorities.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">🗂️</div>
-                <div>
-                  <h4>Affidavits &amp; Statutory Declarations</h4>
-                  <p>We prepare and witness sworn affidavits and statutory declarations for use in court proceedings, administrative processes, and personal legal matters.</p>
-                </div>
-              </article>
+              <% }) %>
             </div>
           </div>
         </div>
-
-        <!-- LEGAL SERVICES -->
-        <div class="service-section" id="legal">
-          <div class="service-section-label" aria-label="Legal services category">
-            <span class="svc-icon" aria-hidden="true">⚖️</span>
-            <h3>Legal Services</h3>
-            <p>Expert legal consultation, drafting, and compliance support for individuals and businesses.</p>
-          </div>
-          <div class="service-section-content">
-            <div class="service-items">
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">💬</div>
-                <div>
-                  <h4>Legal Consultation &amp; Advisory</h4>
-                  <p>Receive clear, professional legal advice tailored to your specific situation. We help you understand your rights, obligations, and the best course of action under Rwandan law.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">📝</div>
-                <div>
-                  <h4>Contract Drafting &amp; Review</h4>
-                  <p>We draft, review, and revise a wide range of contracts — including employment agreements, service contracts, sale agreements, and partnership deeds — to protect your interests.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">🏢</div>
-                <div>
-                  <h4>Company Registration &amp; Corporate Compliance</h4>
-                  <p>We guide you through the full process of registering a company in Rwanda and assist with ongoing corporate compliance, including governance documents and statutory filings.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">🏠</div>
-                <div>
-                  <h4>Property &amp; Land Transaction Assistance</h4>
-                  <p>We provide legal support for property and land transactions, including sale agreements, title verification, transfer documentation, and compliance with land law requirements.</p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-
-        <!-- SPECIALIZED SERVICES -->
-        <div class="service-section" id="specialized">
-          <div class="service-section-label" aria-label="Specialized services category">
-            <span class="svc-icon" aria-hidden="true">🔑</span>
-            <h3>Specialized Services</h3>
-            <p>Tailored solutions for complex or specialized legal and notarial requirements.</p>
-          </div>
-          <div class="service-section-content">
-            <div class="service-items">
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">🖊️</div>
-                <div>
-                  <h4>Power of Attorney Preparation</h4>
-                  <p>We draft and notarize Powers of Attorney (General and Special), enabling you to authorize another person to act legally on your behalf in specific or general matters.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">🔍</div>
-                <div>
-                  <h4>Legal Due Diligence</h4>
-                  <p>We conduct thorough legal due diligence investigations for business transactions, investments, mergers, and acquisitions to identify legal risks and ensure informed decision-making.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">⚖️</div>
-                <div>
-                  <h4>Court Document Preparation</h4>
-                  <p>We prepare and organize court-ready legal documents including pleadings, motions, affidavits, and other required instruments for civil and administrative proceedings.</p>
-                </div>
-              </article>
-              <article class="service-item">
-                <div class="service-item-icon" aria-hidden="true">🌐</div>
-                <div>
-                  <h4>Legal Interpretation &amp; Documentation Support</h4>
-                  <p>We provide expert interpretation of legal texts, regulations, and contracts, and assist with accurate preparation and organization of all supporting legal documentation.</p>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-
+        <% }) %>
       </div>
     </div>
   </section>
