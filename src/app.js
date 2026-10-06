@@ -12,6 +12,7 @@ function createApp({ db, mailer }) {
   app.locals.db = db;
   app.locals.mailer = mailer;
   app.locals.formatDateTime = formatDateTime;
+  app.locals.siteUrl = config.siteUrl;
   app.set('trust proxy', config.trustProxy);
 
   const formLimiter = rateLimit({
@@ -32,6 +33,10 @@ function createApp({ db, mailer }) {
   app.set('views', path.join(__dirname, '..', 'views'));
 
   app.use(express.static(path.join(__dirname, '..', 'public')));
+  app.use((req, res, next) => {
+    res.locals.currentPath = req.path;
+    next();
+  });
 
   app.use(express.json({ limit: '20kb' }));
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));

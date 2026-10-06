@@ -1,15 +1,51 @@
-<!DOCTYPE html>
+<%
+  const pageUrl = siteUrl + (currentPath === '/' ? '/' : currentPath);
+  const business = {
+    '@context': 'https://schema.org',
+    '@type': 'LegalService',
+    name: 'Rutabanks Notary and Legal Services Ltd',
+    slogan: 'Precision in Law. Trust in Service.',
+    url: siteUrl + '/',
+    telephone: '+250788308526',
+    email: 'rutayisireeugene1968@gmail.com',
+    address: { '@type': 'PostalAddress', addressLocality: 'Kigali', addressCountry: 'RW' },
+    areaServed: { '@type': 'Country', name: 'Rwanda' },
+    openingHoursSpecification: [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '09:00', closes: '14:00' }
+    ]
+  };
+  // Escape "<" so text can never close the script tag early
+  const jsonLd = (data) => JSON.stringify(data).replace(/</g, '\\u003c');
+%><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="<%= description %>" />
-  <% if (typeof keywords !== 'undefined') { %><meta name="keywords" content="<%= keywords %>" />
-  <% } %><title><%= title %></title>
+  <title><%= title %></title>
+  <link rel="canonical" href="<%= pageUrl %>" />
+
+  <!-- Link previews (WhatsApp, Facebook, LinkedIn) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rutabanks Notary and Legal Services Ltd" />
+  <meta property="og:title" content="<%= title %>" />
+  <meta property="og:description" content="<%= description %>" />
+  <meta property="og:url" content="<%= pageUrl %>" />
+  <meta property="og:locale" content="en_RW" />
+  <meta name="twitter:card" content="summary" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Open+Sans:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="/css/styles.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>" />
+
+  <% if (activePage === 'home' || activePage === 'contact') { %>
+  <script type="application/ld+json"><%- jsonLd(business) %></script>
+  <% } %>
+  <% if (typeof structuredData !== 'undefined') { %>
+  <script type="application/ld+json"><%- jsonLd(structuredData) %></script>
+  <% } %>
 </head>
 <body>

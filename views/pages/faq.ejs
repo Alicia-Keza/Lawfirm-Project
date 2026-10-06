@@ -1,4 +1,12 @@
-<%- include('../partials/head', { title: "Frequently Asked Questions – Rutabanks Notary and Legal Services Ltd", description: "Answers about office hours, booking appointments, what to bring, fees and how we handle your information.", activePage: 'faq' }) %>
+<%- include('../partials/head', { title: "Frequently Asked Questions – Rutabanks Notary and Legal Services Ltd", description: "Answers about office hours, booking appointments, what to bring, fees and how we handle your information.", activePage: 'faq', structuredData: {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer }
+  }))
+} }) %>
 <%- include('../partials/navbar', { activePage: 'faq' }) %>
 <main id="main">
 

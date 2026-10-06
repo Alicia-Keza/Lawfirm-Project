@@ -9,6 +9,8 @@ if (fs.existsSync(envFile) && process.env.NODE_ENV !== 'test') {
 const config = {
   env: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT) || 3000,
+  // Public address of the site, used for canonical links, Open Graph and the sitemap
+  siteUrl: (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, ''),
   databasePath: process.env.DATABASE_PATH || path.join(__dirname, '..', 'data', 'rutabanks.db'),
   // Set to 1 when running behind a reverse proxy (Render, Railway, Nginx) so client IPs are correct
   trustProxy: Number(process.env.TRUST_PROXY) || 0,
