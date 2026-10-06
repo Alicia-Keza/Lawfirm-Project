@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
 const config = require('./config');
 const { formatDateTime } = require('./format');
@@ -15,6 +16,29 @@ function createApp({ db, mailer }) {
   app.locals.formatDateTime = formatDateTime;
   app.locals.siteUrl = config.siteUrl;
   app.set('trust proxy', config.trustProxy);
+
+  const production = config.env === 'production';
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'", 'https://fonts.googleapis.com'],
+          fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+          imgSrc: ["'self'", 'data:'],
+          connectSrc: ["'self'"],
+          formAction: ["'self'"],
+          frameAncestors: ["'none'"],
+          objectSrc: ["'none'"],
+          baseUri: ["'self'"],
+          // Only force HTTPS once the site is served over HTTPS
+          upgradeInsecureRequests: production ? [] : null
+        }
+      },
+      hsts: production
+    })
+  );
 
   const formLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
