@@ -50,3 +50,10 @@ test('sitemap lists the main pages and every service page', async () => {
   assert.ok(locs.includes('http://localhost:3000/services/power-of-attorney'));
   assert.ok(!locs.some((l) => l.includes('/admin')));
 });
+
+test('404 pages are kept out of search results', async () => {
+  const res = await request(app).get('/no-such-page');
+  assert.equal(res.status, 404);
+  assert.match(res.text, /<meta name="robots" content="noindex" \/>/);
+  assert.doesNotMatch(res.text, /rel="canonical"/);
+});
