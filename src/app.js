@@ -4,6 +4,7 @@ const { rateLimit } = require('express-rate-limit');
 const config = require('./config');
 const { formatDateTime } = require('./format');
 const pageRoutes = require('./routes/pages');
+const seoRoutes = require('./routes/seo');
 const apiRoutes = require('./routes/api');
 const adminRoutes = require('./routes/admin');
 
@@ -41,6 +42,7 @@ function createApp({ db, mailer }) {
   app.use(express.json({ limit: '20kb' }));
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));
 
+  app.use(seoRoutes);
   app.use(pageRoutes);
   app.use('/api', formLimiter, apiRoutes);
   app.use('/admin', adminRoutes);
