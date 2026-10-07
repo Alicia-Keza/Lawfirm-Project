@@ -26,7 +26,7 @@ for (const [url, title] of pages) {
 
 test('current page is marked in the navbar', async () => {
   const res = await request(app).get('/about');
-  assert.match(res.text, /href="\/about" role="listitem" class="active" aria-current="page"/);
+  assert.match(res.text, /<li><a href="\/about" class="active" aria-current="page">/);
 });
 
 test('old .html links redirect to clean URLs', async () => {

@@ -21,21 +21,21 @@
             <div class="firm-tag">& Legal Services Ltd</div>
           </div>
         </a>
-        <div class="nav-links" role="list">
+        <ul class="nav-links">
           <% links.forEach(link => { %>
-          <a href="<%= link.href %>" role="listitem"<% if (link.page === activePage) { %> class="active" aria-current="page"<% } %>><%= link.label %></a>
+          <li><a href="<%= link.href %>"<% if (link.page === activePage) { %> class="active" aria-current="page"<% } %>><%= link.label %></a></li>
           <% }) %>
-        </div>
+        </ul>
         <a href="<%= appointmentHref %>" class="btn btn-primary nav-cta">Book Appointment</a>
-        <button class="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+        <button class="hamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-menu">
           <span></span><span></span><span></span>
         </button>
       </div>
-      <div class="mobile-menu" role="list">
+      <ul class="mobile-menu" id="mobile-menu">
         <% links.forEach(link => { %>
-        <a href="<%= link.href %>" role="listitem"<% if (link.page === activePage) { %> class="active" aria-current="page"<% } %>><%= link.label %></a>
+        <li><a href="<%= link.href %>"<% if (link.page === activePage) { %> class="active" aria-current="page"<% } %>><%= link.label %></a></li>
         <% }) %>
-        <a href="<%= appointmentHref %>" class="btn btn-primary">Book Appointment</a>
-      </div>
+        <li><a href="<%= appointmentHref %>" class="btn btn-primary">Book Appointment</a></li>
+      </ul>
     </div>
   </nav>

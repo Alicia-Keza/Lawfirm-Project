@@ -326,6 +326,7 @@ p {
   display: flex;
 }
 .mobile-menu a {
+  display: block;
   color: rgba(255, 255, 255, 0.85);
   font-size: 1rem;
   font-weight: 500;
@@ -338,6 +339,7 @@ p {
   background: rgba(201, 168, 76, 0.1);
 }
 .mobile-menu .btn {
+  display: flex;
   margin-top: 12px;
   text-align: center;
   justify-content: center;
