@@ -57,3 +57,12 @@ test('404 pages are kept out of search results', async () => {
   assert.match(res.text, /<meta name="robots" content="noindex" \/>/);
   assert.doesNotMatch(res.text, /rel="canonical"/);
 });
+
+test('service page titles fit in search results (70 characters)', async () => {
+  const { allServices } = require('../src/data/services');
+  for (const service of allServices) {
+    const html = (await request(app).get(`/services/${service.slug}`)).text;
+    const title = html.match(/<title>([^<]*)<\/title>/)[1].replace(/&amp;/g, '&');
+    assert.ok(title.length <= 70, `${title} (${title.length})`);
+  }
+});
