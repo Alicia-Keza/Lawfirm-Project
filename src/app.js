@@ -66,6 +66,12 @@ function createApp({ db, mailer }) {
   app.use(express.json({ limit: '20kb' }));
   app.use(express.urlencoded({ extended: false, limit: '20kb' }));
 
+  // Used by hosting platforms to check the app and database are up
+  app.get('/healthz', (req, res) => {
+    db.prepare('SELECT 1').get();
+    res.set('Cache-Control', 'no-store').json({ ok: true });
+  });
+
   app.use(seoRoutes);
   app.use(pageRoutes);
   app.use('/api', formLimiter, apiRoutes);

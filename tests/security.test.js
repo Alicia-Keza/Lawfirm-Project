@@ -26,3 +26,9 @@ test('pages contain no inline scripts that the policy would block', async () => 
     assert.doesNotMatch(html, /\sstyle="/, `inline style on ${url}`);
   }
 });
+
+test('health check reports the app and database are up', async () => {
+  const res = await request(app).get('/healthz');
+  assert.equal(res.status, 200);
+  assert.deepEqual(res.body, { ok: true });
+});
