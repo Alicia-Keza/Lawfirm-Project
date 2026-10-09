@@ -14,8 +14,8 @@ const {
 
 const router = express.Router();
 
-// Compared against when the email is unknown, so both cases take the same time
-const dummyHash = hashPassword('placeholder-password');
+// Compared against when the email is unknown, so both cases take the same time.
+const dummyPasswordHash = hashPassword('placeholder-password');
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -58,7 +58,7 @@ router.post('/login', loginLimiter, async (req, res, next) => {
     const { db } = req.app.locals;
 
     const user = db.prepare('SELECT * FROM admin_users WHERE email = ?').get(email);
-    const ok = await verifyPassword(password, user ? user.password_hash : await dummyHash);
+    const ok = await verifyPassword(password, user ? user.password_hash : await dummyPasswordHash);
     if (!user || !ok) {
       return res.status(401).render('admin/login', {
         error: 'Incorrect email or password.',
