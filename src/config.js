@@ -29,4 +29,33 @@ const config = {
   }
 };
 
+function validateConfig() {
+  const warnings = [];
+
+  if (config.env === 'production') {
+    let siteUrl;
+    try {
+      siteUrl = new URL(config.siteUrl);
+    } catch {
+      warnings.push('Production requires SITE_URL to be a valid URL.');
+    }
+    if (siteUrl && (siteUrl.protocol !== 'https:' || siteUrl.hostname === 'localhost')) {
+      warnings.push('Production SITE_URL should use HTTPS and a non-localhost hostname.');
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.mail.firmEmail)) {
+      warnings.push('Production requires a valid FIRM_EMAIL address.');
+    }
+    if (!config.mail.host) {
+      warnings.push('SMTP_HOST is not configured; email notifications will not be delivered.');
+    }
+  }
+
+  if (warnings.length > 0) {
+    console.warn('[config] warnings:');
+    warnings.forEach((warning) => console.warn(`- ${warning}`));
+  }
+}
+
+validateConfig();
+
 module.exports = config;

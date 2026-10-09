@@ -21,6 +21,8 @@ Copy `.env.example` to `.env` (or set the same variables in your host's dashboar
 
 The site must be served over **HTTPS** in production: the admin session cookie is only sent over HTTPS.
 
+At startup, the app logs a warning if the production `SITE_URL` is invalid or does not use HTTPS, if `FIRM_EMAIL` is invalid, or if `SMTP_HOST` is unset. Without SMTP, email notifications are not delivered.
+
 ## 2a. Deploy with Docker
 
 ```bash
