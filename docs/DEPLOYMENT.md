@@ -11,7 +11,7 @@ Copy `.env.example` to `.env` (or set the same variables in your host's dashboar
 | Variable | Production value |
 |---|---|
 | `NODE_ENV` | `production`: turns on secure cookies, HSTS and HTTPS-only requests |
-| `PORT` | The port your host expects (often set automatically) |
+| `PORT` | The port your host expects (often set automatically); must be an integer from 1 to 65535 |
 | `SITE_URL` | The public address, e.g. `https://www.rutabanks.rw` (no trailing slash) |
 | `DATABASE_PATH` | A path on the persistent disk, e.g. `/app/data/rutabanks.db` |
 | `TRUST_PROXY` | `1` when running behind the host's proxy or load balancer (most platforms) |

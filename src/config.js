@@ -6,9 +6,14 @@ if (fs.existsSync(envFile) && process.env.NODE_ENV !== 'test') {
   process.loadEnvFile(envFile);
 }
 
+const port = Number(process.env.PORT || 3000);
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  throw new Error('PORT must be an integer between 1 and 65535.');
+}
+
 const config = {
   env: process.env.NODE_ENV || 'development',
-  port: Number(process.env.PORT) || 3000,
+  port,
   // Public address of the site, used for canonical links, Open Graph and the sitemap
   siteUrl: (process.env.SITE_URL || 'http://localhost:3000').replace(/\/$/, ''),
   databasePath: process.env.DATABASE_PATH || path.join(__dirname, '..', 'data', 'rutabanks.db'),
